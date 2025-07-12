@@ -36,5 +36,13 @@ map("t", "<A-j>", [[ <C-\><C-N><C-w>j ]], opt)
 map("t", "<A-k>", [[ <C-\><C-N><C-w>k ]], opt)
 map("t", "<A-l>", [[ <C-\><C-N><C-w>l ]], opt)
 
+-- Clear highlights
+vim.keymap.set("n", "<ESC>", vim.cmd.nohlsearch, {desc = "Clear highlights"})
 
+-- Quick exit
+vim.keymap.set({ "i", "x", "n", "s" }, "<C-q>", vim.cmd.quit, { desc = "Quit File" })
+vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", vim.cmd.write, { desc = "Save File" })
 
+-- insert quick move
+vim.keymap.set("i", "<C-h>", "<ESC>I", opt)
+vim.keymap.set("i", "<C-l>", "<ESC>A", opt)
