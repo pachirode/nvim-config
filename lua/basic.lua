@@ -1,3 +1,7 @@
+-- leader
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 -- utf8
 vim.g.encoding = 'utf-8'
 vim.o.fileencoding = 'utf-8'

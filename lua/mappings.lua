@@ -46,3 +46,30 @@ vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", vim.cmd.write, { desc = "Save Fi
 -- insert quick move
 vim.keymap.set("i", "<C-h>", "<ESC>I", opt)
 vim.keymap.set("i", "<C-l>", "<ESC>A", opt)
+
+-- Go
+vim.keymap.set("n", "<leader>gfe", ":GoIfErr<CR>", { desc = "Fill Error in Go" })
+vim.keymap.set("n", "<leader>gfs", ":GoFillStruct<CR>", { desc = "Fill Struct in Go" })
+vim.keymap.set("n", "<leader>gfc", ":GoFillSwitch<CR>", { desc = "Fill Switch in Go" })
+vim.keymap.set("n", "<leader>gft", ":GoAddTag<CR>", { desc = "Fill Tag in Go" })
+vim.keymap.set("n", "<leader>grt", ":GoRmTag<CR>", { desc = "Remove Tag in Go" })
+vim.keymap.set("n", "<leader>gct", ":GoClearTag<CR>", { desc = "Clear Tag in Go" })
+vim.keymap.set("n", "<leader>gfi", ":GoImports<CR>", { desc = "Fill Imports in Go" })
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+vim.keymap.set("n", "<leader>gd", "<cmd>FzfLua lsp_definitions<CR>", { desc = "Go to Definition" })
+vim.keymap.set("n", "<leader>gr", "<cmd>FzfLua lsp_references<CR>", { desc = "Go to Definition" })
+vim.keymap.set("n", "<leader>gi", "<cmd>FzfLua lsp_implementations<CR>", { desc = "Go to Definition" })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+
+-- fzf
+vim.keymap.set("n", "<C-e>", "<cmd>FzfLua buffers<CR>", { desc = "fzf buffers" })
+vim.keymap.set("n", "<leader>fss", "<cmd>FzfLua live_grep<CR>", { desc = "fzf live lines" })
+vim.keymap.set("n", "<leader>fgf", "<cmd>FzfLua files<CR>", { desc = "fzf file" })
+vim.keymap.set("n", "<C-f>", "<cmd>FzfLua lgrep_curbuf<CR>", { desc = "fzf buffer lines" })
+vim.keymap.set("n", "<leader>frf", "<cmd>FzfLua oldfiles<CR>", { desc = "fzf recent by files" })   --mru: most recent used
+vim.keymap.set("n", "<leader>frs", "<cmd>FzfLua treesitter<CR>", { desc = "fzf recent by treesitter" })   --mru: most recent used
+vim.keymap.set("n", "<leader>frh", "<cmd>FzfLua search_history<CR>", { desc = "fzf recent by history" })
+vim.keymap.set("n", "<leader>fm", "<cmd>FzfLua marks<CR>", { desc = "fzf marks" })
+vim.keymap.set("n", "<leader>fgc", "<cmd>FzfLua git_commits<CR>", { desc = "fzf git commit" })
+vim.keymap.set("n", "<leader>fgb", "<cmd>FzfLua git_bcommits<CR>", { desc = "fzf git bcommit" })
+vim.keymap.set("n", "<leader>fgs", "<cmd>FzfLua git_status<CR>", { desc = "fzf git status" })
