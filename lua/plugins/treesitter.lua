@@ -7,13 +7,29 @@ return {
     require("nvim-treesitter.query_predicates")
   end,
   opts = {
-    ensure_installed = { "bash", "go", "lua", "markdown_inline", "vim", "vimdoc" },
+    ensure_installed = {
+      "bash",
+      "go",
+      "lua",
+      "python",
+      "yaml",
+      "json",
+      "markdown",
+      "markdown_inline",
+      "vim",
+      "vimdoc",
+    },
     auto_install = true,
-    highlight = { enable = true },
-    indent = { enable = true },
+    highlight = {
+      enable = true,
+    },
+    indent = {
+      enable = true,
+    },
   },
   config = function(_, opts)
     require("nvim-treesitter.configs").setup(opts)
+
     vim.api.nvim_create_autocmd("FileType", {
       callback = function()
         if pcall(vim.treesitter.start) then
@@ -25,3 +41,4 @@ return {
   end,
   build = ":TSUpdate",
 }
+

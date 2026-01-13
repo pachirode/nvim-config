@@ -1,50 +1,92 @@
--- plugins/lsp.lua  
-return {  
-  "neovim/nvim-lspconfig",  
-  -- "williamboman/mason.nvim",  
-  -- "williamboman/mason-lspconfig.nvim",  
-  config = function()  
-    local lsp_utils = require("lspconfig.util")  
-    -- require("mason").setup()
-    -- require("mason-lspconfig").setup()
+-- plugins/lsp.lua
+return {
+  "neovim/nvim-lspconfig",
+  config = function()
+    ------------------------------------------------------------------
+    -- Go (gopls)
+    ------------------------------------------------------------------
+    vim.lsp.config.gopls = {
+      cmd = { "gopls", "serve" },
 
-    -- Go 语言服务器配置  
-    require("lspconfig").gopls.setup({  
-      cmd = { "gopls", "serve" },  
-      root_dir = lsp_utils.root_pattern("go.mod", ".git"),  
-      on_attach = function(client, bufnr)  
-        -- LSP 附加事件处理（示例配置）  
-        -- Enable completion triggered by <c-x><c-o>--
-        vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")  
+      root_dir = function(fname)
+        return vim.fs.root(fname, { "go.mod", ".git" })
       end,
-      settings = {  
-        gopls = {  
-          analyses = { 
+
+      on_attach = function(_, bufnr)
+        vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+      end,
+
+      settings = {
+        gopls = {
+          analyses = {
             unusedparams = false,
             fieldalignment = false,
-          },  
-          staticcheck = false,  
+          },
+          staticcheck = false,
           gofumpt = true,
-          buildFlags = { "-tags=integration" }  
-        }  
-      },  
-      init_options = {  
-        usePlaceholders = true  
-      }  
-    })  
+          buildFlags = { "-tags=integration" },
+        },
+      },
 
-    -- 自动格式化配置  
-    vim.api.nvim_create_autocmd("BufWritePre", {  
-      pattern = "*.go",  
-      callback = function()  
-        vim.lsp.buf.format({  
-          async = false,  
-          timeout_ms = 5000,  
-          filter = function(client)  
-            return client.name == "gopls"  
-          end  
-        })  
-      end  
-    })  
-  end  
-}  
+      init_options = {
+        usePlaceholders = true,
+      },
+    }
+
+    ------------------------------------------------------------------
+    -- Python (pyright)
+    ------------------------------------------------------------------
+    vim.lsp.config.pyright = {
+      root_dir = function(fname)
+        return vim.fs.root(fname, {
+          "pyproject.toml",
+          "setup.py",
+          "setup.cfg",
+          "requirements.txt",
+          ".git",
+        })
+      end,
+
+      on_attach = function(_, bufnr)
+        vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+      end,
+
+      settings = {
+        python = {
+          analysis = {
+            typeCheckingMode = "basic",
+            autoSearchPaths = true,
+            useLibraryCodeForTypes = true,
+          },
+        },
+      },
+    }
+
+    ------------------------------------------------------------------
+    -- Enable LSP servers
+    ------------------------------------------------------------------
+    vim.lsp.enable({
+      "gopls",
+      "pyright",
+    })
+
+    ------------------------------------------------------------------
+    -- Go: format on save (only gopls)
+    ------------------------------------------------------------------
+    local go_fmt_grp = vim.api.nvim_create_augroup("GoLspFormat", { clear = true })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      pattern = "*.go",
+      group = go_fmt_grp,
+      callback = function()
+        vim.lsp.buf.format({
+          async = false,
+          timeout_ms = 5000,
+          filter = function(client)
+            return client.name == "gopls"
+          end,
+        })
+      end,
+    })
+  end,
+}
+
